@@ -1,0 +1,423 @@
+<!-- next up: 
+
+- add event content to pop up
+- add facebook links etc. to pop up
+- add check for all day events
+- styling update
+- put it in wordpress (And make it functional)
+- possible map in popup?
+- sharing options through wordpress items?
+
+-->
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>load demo</title>
+    <style>
+    body {
+        font-size: 12px;
+        font-family: Arial;
+    }
+    /* div {
+  	border:1px solid;
+  	padding:10px;
+  } */
+    
+    #eventContainer,
+    #monthselector {
+        display: none;
+    }
+    
+    #eventMonthContainer {
+        border: none;
+        margin: none;
+        padding: none;
+    }
+    
+    .month {
+        float: left;
+    }
+    
+    .white-popup {
+        position: relative;
+        background: #FFF;
+        padding: 20px;
+        width: auto;
+        max-width: 800px;
+        margin: 20px auto;
+        min-height: 90px;
+    }
+    .eventContainer{
+    	min-height: 211px;
+    }
+    .eventContainerLeftSide{
+    	max-width: 500px;
+	    float: left;
+	    min-width: 450px;
+	    min-height: 214px;
+    }
+    .eventContainerRightSide{
+    	float:right;
+    	margin-right:10px;
+    }
+    .popupDesc {
+    	min-height: 130px;
+	}
+    </style>
+    <link rel='stylesheet' href='css/fullcalendar.min.css' />
+    <link rel='stylesheet' href='css/fullcalendar.print.css' media="print" />
+    <link rel="stylesheet" href='css/magnific-popup.css'>
+    <link rel="stylesheet" href="css/theme7.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <script src='lib/moment.min.js'></script>
+    <script src='lib/jquery-1.12.2.min.js'></script>
+    <script src='lib/fullcalendar.min.js'></script>
+    <script src='lib/fullcalendar-nl.js'></script>
+    <script src='lib/jquery.magnific-popup.min.js'></script>
+    <!-- AddEvent -->
+    <script type="text/javascript" src="lib/atc.min.js"></script>
+    <script>
+	  window.fbAsyncInit = function() {
+	    FB.init({
+	      appId      : '1516098955365078',
+	      xfbml      : true,
+	      version    : 'v2.5'
+	    });
+	    
+	};
+
+	  (function(d, s, id){
+	     var js, fjs = d.getElementsByTagName(s)[0];
+	     if (d.getElementById(id)) {return;}
+	     js = d.createElement(s); js.id = id;
+	     js.src = "//connect.facebook.net/en_US/sdk.js";
+	     fjs.parentNode.insertBefore(js, fjs);
+	   }(document, 'script', 'facebook-jssdk'));
+
+	</script>
+
+    <script>
+    (function(i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function() {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date();
+        a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', 'UA-42811101-4', 'auto');
+    ga('send', 'pageview');
+    </script>
+    <script type="text/javascript">
+    addeventatc.settings({
+        css: false
+    });
+    </script>
+</head>
+
+<body>
+    <div id="calendar"></div>
+    <div id="eventPopup" class="white-popup mfp-hide">
+        <div class="eventContainer">
+        	<div class="eventContainerLeftSide">
+	            <div class="popupTitle" style="float:left; font-size: 16px; text-align: center; width: 60%; margin-bottom: 10px;">Here's the title!</div>
+	            <div class="share" style="float: right; text-align: center; margin-right:40px; margin-bottom: 10px;">SHARE THIS:
+	                <br/><b>SHARING LINKS</b>
+	                <div title="Add to Calendar" class="addeventatc">
+	                    <i class="fa fa-calendar"></i>
+	                    <span class="start">04/14/2016 16:00</span>
+	                    <span class="end">04/14/2016 18:00</span>
+	                    <span class="timezone">Europe/Berlin</span>
+	                    <span class="title">Summary of the event</span>
+	                    <span class="description">Description of the event</span>
+	                    <span class="location">Location of the event</span>
+	                    <span class="date_format">MM/DD/YYYY</span>
+	                </div>
+	            </div>
+	            <div class="popupDesc" style="clear: both; width: 100%; text-align: justify; margin-bottom: 10px;">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima fugit, repellat soluta voluptates doloremque ad dolores doloribus enim perspiciatis aliquid, natus nam, labore officia beatae unde. Quas iusto officia officiis id, distinctio cupiditate sint incidunt, consequuntur molestiae maiores dolores quo voluptas ea omnis nihil et animi quae expedita pariatur? Qui, dolorum eligendi eos quas repellendus! Magnam eveniet fuga numquam, non tenetur iusto corporis soluta minus doloremque sunt quos ratione iste dolorum, repellat quis est nam ea saepe, enim aspernatur vel dignissimos voluptate cumque! Magni, laboriosam labore. Et itaque, recusandae culpa nemo deserunt molestias voluptates, beatae, omnis, animi quidem quis adipisci? </div>
+	            <div class="dateTable" style="float:left">
+	                <div style="width:33px;float: left;"><b>Start:</b></div><div class="datestart" style="float: left;">date</div>
+	                <div style="width:33px;float: left; clear: both;"><b>End:</b></div><div class="dateend" style="float: left;"><b>Einde:</b>date</div>
+	            </div>
+	            <!-- <div class="timestart" style="float:left;">time start</div>
+	            <div class="timeend" style="float:left;">time end</div> -->
+	            <div class="links" style="float:right; text-align: center">More info:
+	                <br/>
+	                <div class="socialIcons" style="font-size:16px;"><a id="facebookLink"><i class="fa fa-facebook-official"></i></a> <a id="webLink"><i class="fa fa-link"></i></a></div>
+	            </div>
+	        </div>
+	        <div class="eventContainerRightSide">
+	        	<div class="fb-page" data-href="https://www.facebook.com/wattedoeninberlijn" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><div class="fb-xfbml-parse-ignore"><blockquote cite="https://www.facebook.com/facebook"><a href="https://www.facebook.com/facebook">Facebook</a></blockquote></div></div>
+	        </div>
+        </div>
+    </div>
+    <span id="eventstemporary"></span>
+    <div id="eventContainer">
+        <div class="datestart" style="float:left;">date</div>
+        <div class="dateend" style="float:left;">date</div>
+        <div class="timestart" style="float:left;">time start</div>
+        <div class="timeend" style="float:left;">time end</div>
+        <div class="facebook" style="float: right;">FB link</div>
+        <div class="weblink" style="float: right;">web link</div>
+        <div class="description" style="clear: left">here should be the description</div>
+    </div>
+    <div id="eventMonthContainer">
+    </div>
+    <div id="monthselector" style="clear:left; border: none;">
+        <div class="month">&laquo;</div>
+        <div data-startdate="01/01" data-enddate="31/01" data-year="2016" class="month"><a href="#">januari</a></div>
+        <div data-startdate="01/02" data-enddate="29/02" data-year="2016" class="month"><a href="#">februari</a></div>
+        <div class="month" data-month="3"><a href="#">maart</a></div>
+        <div class="month" data-month="4"><a href="#">april</a></div>
+        <div class="month" data-month="5"><a href="#">mei</a></div>
+        <div class="month" data-month="6"><a href="#">juni</a></div>
+        <div class="month" data-month="7"><a href="#">juli</a></div>
+        <div class="month" data-month="8"><a href="#">augustus</a></div>
+        <div class="month" data-month="9"><a href="#">september</a></div>
+        <div class="month" data-month="10"><a href="#">oktober</a></div>
+        <div class="month" data-month="11"><a href="#">november</a></div>
+        <div class="month" data-month="12"><a href="#">december</a></div>
+        <div class="month">&raquo;</div>
+        <div class="month" style="clear: both;">2015</div>
+        <div class="month">2016</div>
+        <div class="month">2017</div>
+    </div>
+    <script>
+    $(document).ready(function() {
+
+        // Capture when an option in the drop down is clicked
+        addeventatc.register('button-dropdown-click', function(obj) {
+
+            // Console log example
+            console.log('button-dropdown-click -> ' + obj.id + ', service -> ' + obj.service);
+
+            ga('send', 'event', {
+                    hitType: 'event',
+                    eventCategory: 'evenement',
+                    eventAction: 'addToCalendar',
+                    eventLabel: obj.service,
+                    nonInteraction: true,
+                    transport: 'beacon'
+                });
+
+        });
+
+        $('#calendar').fullCalendar({
+
+            eventMouseover: function(calEvent, jsEvent, view) {
+                $(this).magnificPopup({
+                    type: 'inline',
+                    midClick: true
+                });
+                console.log(calEvent.facebookLink);
+                $('#eventPopup .popupTitle').text(calEvent.title);
+                $('#eventPopup .popupDesc').text(calEvent.description);
+                $('#eventPopup .links #facebookLink').attr('href', calEvent.facebookLink);
+                $('#eventPopup .links #facebookLink').attr('target', '_blank');
+                $('#eventPopup .links #webLink').attr('href', calEvent.webLink);
+                $('#eventPopup .links #webLink').attr('target', '_blank');
+                $('#eventPopup .datestart').text(calEvent.start.format('dddd D MMM HH:mm'));
+                $('#eventPopup .dateend').text(calEvent.end.format('dddd D MMM HH:mm'));
+                $('#eventPopup .timestart').attr('display', 'none');
+                $('#eventPopup .timeend').attr('display', 'none');
+                $('#eventPopup .fb-page').attr('data-href', encodeURIComponent(calEvent.facebookLink));
+                FB.XFBML.parse();
+                $(this).attr("href", "#eventPopup");
+                ga('send', 'event', {
+                    hitType: 'event',
+                    eventCategory: 'evenement',
+                    eventAction: 'hover',
+                    eventLabel: calEvent.title,
+                    nonInteraction: true
+                });
+            },
+
+            eventClick: function(calEvent, jsEvent, view) {
+                ga('send', 'event', {
+                    hitType: 'event',
+                    eventCategory: 'evenement',
+                    eventAction: 'click',
+                    eventLabel: calEvent.title,
+                    nonInteraction: true,
+                    transport: 'beacon'
+                });
+                //$(this).css('border-color', 'red');	
+                //alert('Event: ' + calEvent.title);      
+
+            },
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'month agendaWeek'
+            },
+            //defaultView: 'agendaWeek',
+            eventLimit: true // allow "more" link when too many events
+
+            // put your options and callbacks here
+
+        })
+
+        $('#eventMonthContainer').empty();
+
+
+        //alert("The current date of the calendar is " + moment.format());
+        //fillEventData('01/01','31/01','2016');
+        fillFullCalendar();
+
+        $('.month').click(function() {
+            //alert($(this).text());
+            //fillEventData($(this).data('startdate'),$(this).data('enddate'),$(this).data('year'));
+        });
+
+
+
+    });
+
+
+    function fillFullCalendar() {
+        $.get('eventsfromgooglesheets.html', {}, function(data) // lets get some data on the road
+                {
+                    var $response = $('<tbody>').html(data);
+                    $('#eventstemporary').append($response.find('#0 tbody'));
+                }, 'html')
+            .done(function() {
+                var $eventnumber = 0;
+                $('#eventstemporary tr').first().remove(); // lets clean up googles response, header row is only needed for show
+                $('#eventstemporary th').remove(); // also, the weird beginning rows as index that google returns, not really needed
+                $('#eventstemporary tr').each(function(index) { // run through each of the remaining result rows
+                    $eventnumber = $eventnumber + 1;
+                    var $event = [{
+                        id: $eventnumber
+                    }];
+
+
+                    $(this).children('td').each(function(tdindex) { // run through each of the result items to fill our divs
+                        if (tdindex == 0) {
+                            //$('#'+eventnumber+' .datestart').text($(this).text());
+                            //console.log(eventnumber+'<--');
+                            $event[0].start = $(this).text();
+                            //alert($event[0].start + '<--');
+                        }
+                        if (tdindex == 1) {
+                            //$('#'+eventnumber+' .dateend').text($(this).text());
+                            $event[0].end = $(this).text();
+                        }
+                        if (tdindex == 2) {
+                            //$('#'+eventnumber+' .timestart').text($(this).text());
+                            //$event[0].start.add(moment($(this).text(),'HH:mm'));
+                            $event[0].start += ' ' + $(this).text();
+                            $event[0].start = moment($event[0].start, 'DD/MM/YYYY hh:mm');
+
+                        }
+                        if (tdindex == 3) {
+                            //$('#'+eventnumber+' .timeend').text($(this).text());
+                            $event[0].end += ' ' + $(this).text();
+                            $event[0].end = moment($event[0].end, 'DD/MM/YYYY hh:mm');
+                            //alert($event[0].end);
+                        }
+                        if (tdindex == 4) {
+                            //$('#'+eventnumber+' .description').text($(this).text());
+                            $event[0].title = $(this).text();
+                            //alert($event[0].title + '<--');
+                        }
+                        if (tdindex == 5) {
+                            //$('#'+eventnumber+' .description').text($(this).text());
+                            $event[0].description = $(this).text();
+                            //alert($event[0].title + '<--');
+                        }
+                        if (tdindex == 7) {
+                            $event[0].webLink = $(this).text();
+                            //$('#'+eventnumber+' .weblink').text($(this).text());
+                        }
+                        if (tdindex == 8) {
+                            $event[0].facebookLink = $(this).text();
+                            //$('#'+eventnumber+' .facebook').text($(this).text());
+                        }
+                        //console.log( tdindex + ": " + $( this ).text() );
+                    })
+                    $('#calendar').fullCalendar('addEventSource', $event);
+                    console.log($event);
+                    $('#eventstemporary tr').remove(); // lets get rid of this bloody result!
+                })
+
+            })
+    }
+
+    function fillEventData(startdate, enddate, year) {
+        // filling in the variables based on the input we get from our user
+        var $startdateday = startdate.substring(0, 2);
+        var $startdatemonth = startdate.substring(3);
+        var $enddateday = enddate.substring(0, 2);
+        var $enddatemonth = enddate.substring(3);
+        var $startdateD = new Date(year, $startdatemonth - 1, $startdateday);
+        var $enddateD = new Date(year, $enddatemonth - 1, $enddateday);
+        //alert ($enddateD);
+
+        $('#eventMonthContainer').empty(); // CLS!
+        $('#monthselector').css('display', 'inline') // no script? don't show!
+        $.get('eventkalender.html', {}, function(data) // lets get some data on the road
+                {
+                    var $response = $('<tbody>').html(data);
+                    $('#eventstemporary').append($response.find('tbody'));
+                }, 'html')
+            .done(function() {
+                var eventnumber = 'event';
+                $('tr').first().remove(); // lets clean up googles response, header row is only needed for show
+                $('th').remove(); // also, the weird beginning rows as index that google returns, not really needed
+                $('tr').each(function(index) {
+                    var $controlStartDay = $(this).children('td').first().text();
+                    var $controlEndDay = $(this).children('td:nth(1)').text();
+                    var $controlStartDayD = new Date($controlStartDay.substring(6, 10), $controlStartDay.substring(3, 5) - 1, $controlStartDay.substring(0, 2));
+                    if ($controlStartDayD < $startdateD || $controlStartDayD > $enddateD) {
+                        $('tr:nth(' + index + ')').remove();
+                    }
+                })
+                $('tr').each(function(index) { // run through each of the remaining result rows
+                    eventnumber = index + 1;
+                    eventnumber = 'event' + eventnumber;
+                    $('#eventContainer').clone().attr('id', eventnumber).appendTo('#eventMonthContainer'); // make sure we have a unique id to work with
+                    $(this).children('td').each(function(tdindex) { // run through each of the result items to fill our divs
+                        if (tdindex == 0) {
+                            $('#' + eventnumber + ' .datestart').text($(this).text());
+                            //console.log(eventnumber+'<--');
+                        }
+                        if (tdindex == 1) {
+                            $('#' + eventnumber + ' .dateend').text($(this).text());
+                        }
+                        if (tdindex == 2) {
+                            $('#' + eventnumber + ' .timestart').text($(this).text());
+                        }
+                        if (tdindex == 3) {
+                            $('#' + eventnumber + ' .timeend').text($(this).text());
+                        }
+                        if (tdindex == 4) {
+                            $('#' + eventnumber + ' .description').text($(this).text());
+                        }
+                        if (tdindex == 6) {
+                            $('#' + eventnumber + ' .weblink').text($(this).text());
+                        }
+                        if (tdindex == 7) {
+                            $('#' + eventnumber + ' .facebook').text($(this).text());
+                        }
+                        //console.log( tdindex + ": " + $( this ).text() );
+                    })
+
+                    $('tr').remove(); // lets get rid of this bloody result!
+                })
+
+            })
+            .fail(function() {
+                alert('somethings wrong here');
+            });
+    }
+    </script>
+    <noscript>Sorry, your browser doesn't support scripts. I'm not able to show you any upcoming events now. #Robokees out.</noscript>
+</body>
+
+</html>
